@@ -42,6 +42,13 @@ graph LR
     C --> D[🎨 Image Creation]
     D --> E[📧 Email Delivery]
 ```
+### 🖼️ Automation Workflow:
+![Workflow Screenshot](assets/Multi-Agent-AI-Workflow-for-Content-Creation.png)
+
+![Workflow Screenshot](assets/input_form.png)
+
+### 🖼️ Generated results:
+![mailed Screenshot](assets/generated_post.png)
 
 1. Submit a topic via a simple form (≈2 minutes)
 2. AI agents research, write, and design
