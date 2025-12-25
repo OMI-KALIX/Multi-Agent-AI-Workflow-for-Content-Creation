@@ -1,0 +1,857 @@
+{
+  "name": "Multi-Agent AI for LinkedIn Content Creation",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Generate a post using the following inputs:\n\nPurpose of Post: {{ $('form for post').item.json['Purpose of Post'] }}\n\nTopic / Idea: {{ $('form for post').item.json['Topic / Idea'] }}\nKey Points to Include:\n{{ $('form for post').item.json['Key Points to Include'] }}\n\nTarget Audience: {{ $('form for post').item.json['Target Audience'] }}\n\nTone of Writing: {{ $('form for post').item.json['Tone of Writing'] }}\n\nPost Length: {{ $('form for post').item.json['Post Length'] }}\nEmoji Usage: {{ $('form for post').item.json['Emoji Usage'] }} \n\nHashtag Preference: {{ $('form for post').item.json['Hashtag Preference'] }}\nPersonal Context / Experience:\n{{ $('form for post').item.json['Personal Context'] }}\n\nFormatting Preference: {{ $('form for post').item.json['Formatting Preference'] }}\n\ncontent 1:{{ $json.data.pages['1'].search_results[0].snippet }}\ncontent 2:{{ $json.data.pages['1'].search_results[1].snippet }}\ncontent 3:{{ $json.data.pages['1'].search_results[2].snippet }}\ncontent 4:{{ $json.data.pages['1'].search_results[3].snippet }}\n\ncontent 5:{{ $json.data.pages['1'].search_results[4].snippet }}\n\ncontent 6:{{ $json.data.pages['1'].search_results[5].snippet }}\n\ncontent 7:{{ $json.data.pages['1'].search_results[6].snippet }}\n\ncontent 8:{{ $json.data.pages['1'].search_results[7].snippet }}\ncontent 9:{{ $json.data.pages['1'].search_results[8].snippet }}\ncontent 10:{{ $json.data.pages['1'].search_results[9].snippet }}\n\n",
+        "options": {
+          "systemMessage": "=You are a professional social media post writer.\n\nYour job is to generate a high-quality LinkedIn post using ONLY:\n\nThe inputs provided from the form\n\nThe factual context explicitly provided in the Tavily content (if present)\n\nYou will receive the following fields:\n\npost_goal\n\ntopic\n\nkey_points (if present; if not present, do not reference them)\n\naudience\n\ntone\n\nlength\n\nuse_emojis\n\nhashtag_style\n\npersonal_context\n\nformat_style\n\nYou may ALSO receive:\n\nTavily search content (summaries or extracted facts)\n\n────────────────────────\nGROUNDING RULE (CRITICAL)\n────────────────────────\n\nYou may add additional points ONLY if they are:\n\nExplicitly supported by the Tavily content, AND\n\nDirectly relevant to the topic\n\nDo NOT add any point that cannot be traced to:\n\nThe form inputs, or\n\nThe Tavily content\n\nIf Tavily content is missing, do NOT add extra context.\n\n────────────────────────\nSTRICT CONTENT RULES\n────────────────────────\n\nDo NOT invent achievements, metrics, tools, timelines, results, or claims.\n\nDo NOT infer benefits or processes unless Tavily explicitly states them.\n\nDo NOT contradict Tavily-provided facts.\n\nIf key_points or personal_context are empty, do NOT assume details.\n\nAvoid buzzwords, hype, and generic AI marketing language.\n\nNever mention Tavily, web search, prompts, system rules, or that you are an AI.\n\n────────────────────────\nCONTENT GENERATION RULES\n────────────────────────\n\nPurpose Alignment\nMatch the writing style exactly to post_goal:\n\nPersonal Learning → reflective, honest, learning-focused\n\nBuild in Public → progress, challenges, insights\n\nEducational → explanatory, structured\n\nCase Study → problem → approach → takeaway\n\nAnnouncement → clear and concise\n\nPromotional → subtle, value-first\n\nTopic Discipline\n\nThe topic is the single source of truth.\n\nDo not drift into adjacent or speculative areas.\n\nAudience Awareness\n\nStudents → practical, learning-oriented\n\nDevelopers / Engineers → technical clarity\n\nGeneral Tech Audience → accessible language\n\nTone Enforcement\nMatch tone exactly:\n\nTechnical → precise, factual\n\nStorytelling → narrative flow\n\nBold → confident, not exaggerated\n\nProfessional → neutral and polished\n\nMotivational → encouraging but realistic\n\nFriendly → conversational\n\nLength Control\n\nShort → 3–5 lines maximum\n\nMedium → LinkedIn-style spacing\n\nLong-form → structured story or thread\n\nFormatting Preference\n\nPlain text → paragraphs only\n\nBullet points → clean bullets, no nesting\n\nBold highlights → bold ONLY key phrases\n\nHook → Story → Lesson → must follow this order exactly\n\nEmoji Usage\n\nUse emojis ONLY if use_emojis = Yes\n\nMaximum 1 emoji per paragraph\n\nEmojis must support meaning\n\nHashtags\n\nGenerate hashtags ONLY from:\n\ntopic\n\naudience\n\nvalidated Tavily concepts (if present)\n\nQuantity must match hashtag_style:\n\nMinimal → 3–5\n\nMedium → 5–8\n\nTrending → 8–12\n\nSTRICT OUTPUT FORMAT (MANDATORY — PLAIN TEXT)\n\nOutput MUST be plain text only\n\nDo NOT output JSON or key–value pairs\n\nDo NOT wrap the output in code blocks\n\nDo NOT include titles, headings, labels, or metadata\n\nDo NOT include explanations or commentary\n\nText Structure Rules\n\nThe output must be a LinkedIn-ready post body\n\nParagraphs must be separated by a single blank line\n\nUse exactly \\n\\n between paragraphs\n\nDo NOT add extra blank lines at the beginning or end\n\nDo NOT leave trailing spaces\n\nFormatting Rules\n\nUse bold text only where explicitly allowed by format_style\n\nDo NOT use other markdown (no headings, lists unless bullets are required)\n\nBullets (if used) must be simple hyphen bullets -\n\nNo nested bullets\n\nEmoji Rules\n\nEmojis are allowed ONLY if use_emojis = Yes\n\nMaximum one emoji per paragraph\n\nEmojis must support meaning, not decoration\n\nHashtag Rules\n\nHashtags must appear only at the very end of the post\n\nHashtags must be on their own line(s) after the final paragraph\n\nNo text is allowed after the hashtags\n\nHashtag count must match hashtag_style\n\nFinal Enforcement\n\nThe output must be copy-paste ready for LinkedIn\n\nNo prefixes, suffixes, or system artifacts\n\nThe final line must be either:\n\nThe last hashtag, or\n\nThe last sentence (if no hashtags are required)"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        -1888,
+        688
+      ],
+      "id": "c2caa363-d6b0-4b09-85c3-c6cd8dfca06b",
+      "name": "LinkedIn Post Generator Engine"
+    },
+    {
+      "parameters": {
+        "sendTo": "r245@ft.ac.in",
+        "subject": "LinkedIn Post",
+        "message": "={{ $('Markdown').item.json.data }}",
+        "options": {
+          "appendAttribution": false,
+          "attachmentsUi": {
+            "attachmentsBinary": [
+              {}
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        -176,
+        672
+      ],
+      "id": "40821064-1207-4d4c-9aa2-83c0baefcb52",
+      "name": "Send a message",
+      "webhookId": "0ac07c4e-0450-4159-8bb7-f763fc0d3fce",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "hPuH5quRckLV1ChC",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "markdownToHtml",
+        "markdown": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.markdown",
+      "typeVersion": 1,
+      "position": [
+        -1536,
+        688
+      ],
+      "id": "d9b37933-eb6e-41df-b8e2-615b05049c5d",
+      "name": "Markdown"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        32,
+        832
+      ],
+      "id": "48661d1b-e1dc-4dce-ae6a-903c74a49120",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.co/v1/images/generations",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer d-a12d"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"provider-4/imagen-4\",\n  \"prompt\": \"{{ $json.clean_text }}\",\n  \"n\": 1,\n  \"size\": \"1024x1024\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -912,
+        688
+      ],
+      "id": "cb6cf55c-f5eb-4b05-83ab-55d017e694a9",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "options": {
+          "temperature": 0.6,
+          "topP": 0.9,
+          "numCtx": 8192,
+          "repeatPenalty": 1.1
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        -1584,
+        944
+      ],
+      "id": "89e9cacd-5f27-455d-8bce-111cd503b6fb",
+      "name": "llama3.2",
+      "credentials": {
+        "ollamaApi": {
+          "id": "XzeXVzZagz4Tv0n1",
+          "name": "Ollama account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.output }}",
+        "options": {
+          "systemMessage": "=You are a professional graphic design system that creates LinkedIn social media post visuals. Your output must be a single, clean, modern visual based strictly on provided content.\nCore Parameters You Will Receive:\n\nPost text content\nTopic\nTarget audience\nPlatform\nTone\n\nMandatory Design Constraints:\nContent Grounding\n\nExtract visual concepts ONLY from the provided post text and topic\nNever invent metrics, features, tools, or claims not mentioned\nIf the post is abstract, keep the visual abstract\nIf the post is specific, reflect that specificity\n\nVisual Format\n\nAspect ratio: 1:1 square\nResolution: High quality, mobile-optimized\nLayout: Clean hierarchy with clear focal point\n\nText Elements\n\nMaximum one headline: 5-7 words, derived from post key message\nOptional one subtext line: 4-6 words maximum\nNo hashtags, usernames, or CTAs in image\nText must be large and readable on mobile screens\n\nDesign Style\n\nModern, minimal, professional\nFlat design or subtle depth only\nNo photorealistic humans or faces\nNo stock photo aesthetics\nTechnical and educational feel\n\nColor Palette\n\nProfessional: blues, greys, whites, dark navy\nMuted accent colors allowed\nHigh contrast for accessibility\nNo neon, excessive gradients, or flashy colors\n\nVisual Elements Allowed\n\nAbstract shapes and geometric forms\nIconography related to stated topic\nSimple illustrations (non-decorative)\nFlow diagrams (only if process is mentioned)\nDocument/data representations (only if relevant)\nMinimal infographic elements (only if comparisons exist in post)\n\nVisual Elements Forbidden\n\nInvented dashboards or UI screenshots\nFake logos or brand names\nDetailed product mockups\nComplex charts with unmention data\nDecorative or irrelevant imagery\nMarketing clichés or hype visuals\n\nOutput Structure:\nHeadline: [5-7 word phrase from post core message]\nVisual Concept: [Precise description of what appears in the image - objects, shapes, layout, all grounded in post content]\nLayout Description: [Specific positioning - top, center, bottom, left, right alignment and spatial relationships]\nStyle Notes: [Color palette with hex values, typography style, mood descriptors, design approach]\nExample Input-Output Relationship:\nIf post says: AI reduced our invoice processing time by automating data extraction\nCorrect headline: Invoice Processing Time Reduced\nCorrect visual: Split composition showing cluttered documents on left, clean automated flow on right\nIncorrect headline: 10X Faster Processing (metric not in post)\nIncorrect visual: Dashboard showing 10 companies using the tool (invented data)"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        -1344,
+        688
+      ],
+      "id": "5b4ed158-bd05-4b1a-9003-f32ae9e8fffc",
+      "name": "Image prompt generator"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "efcd746b-948e-49c6-85a3-27e0dd201c93",
+              "leftValue": "={{ $json.data[0] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -784,
+        688
+      ],
+      "id": "9991e851-6332-464d-9092-43f064977d13",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "data",
+        "include": "allOtherFields",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -608,
+        672
+      ],
+      "id": "26b0d638-9bd1-4124-83e2-0c0ffcb7161b",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.data.url }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer ddc-2d"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          },
+          "response": {
+            "response": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -464,
+        672
+      ],
+      "id": "26bf4d12-55d2-4fb1-a167-27438b1ac0a8",
+      "name": "get an generated image"
+    },
+    {
+      "parameters": {
+        "operation": "binaryToPropery",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        -560,
+        928
+      ],
+      "id": "a1302d3c-120e-4997-8ce8-7c6a9f033a4a",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        -384,
+        928
+      ],
+      "id": "474665f0-c9d1-4e42-bfee-9009d383cff0",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "lRzYrDoRD0oWX7rB",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/lRzYrDoRD0oWX7rB",
+          "cachedResultName": "r230345 email labeling"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        -144,
+        928
+      ],
+      "id": "038d1444-d8ab-4906-ae2a-459a503c25df",
+      "name": "email labeling"
+    },
+    {
+      "parameters": {
+        "content": "## form i/p -> crawleo.dev live search  -> using that post generation -> post formatting (bold & highlight)",
+        "height": 720,
+        "width": 976,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2320,
+        416
+      ],
+      "typeVersion": 1,
+      "id": "f909020d-a8c5-4707-88c4-3db487b7cef9",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "formTitle": "LinkedIn Post Generation",
+        "formDescription": "LinkedIn Post Generation",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Purpose of Post",
+              "fieldType": "dropdown",
+              "defaultValue": "Personal Learning",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Build in Public"
+                  },
+                  {
+                    "option": "Educational"
+                  },
+                  {
+                    "option": "Announcement"
+                  },
+                  {
+                    "option": "Personal Learning"
+                  },
+                  {
+                    "option": "Case Study"
+                  },
+                  {
+                    "option": "Promotional"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Topic / Idea",
+              "placeholder": "e.g. Zero-Touch AI Invoice Automation",
+              "defaultValue": "Zero-Touch AI Invoice Automation",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Key Points to Include",
+              "fieldType": "textarea",
+              "placeholder": "Placeholder:  What problem it solves  Tools used  Result / impact"
+            },
+            {
+              "fieldLabel": "Target Audience",
+              "fieldType": "dropdown",
+              "defaultValue": "Students",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Students"
+                  },
+                  {
+                    "option": "Developers"
+                  },
+                  {
+                    "option": "Founders"
+                  },
+                  {
+                    "option": "Automation Engineers"
+                  },
+                  {
+                    "option": "General Tech Audience"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Tone of Writing",
+              "fieldType": "dropdown",
+              "defaultValue": "Technical",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Technical"
+                  },
+                  {
+                    "option": "Professional"
+                  },
+                  {
+                    "option": "Friendly"
+                  },
+                  {
+                    "option": "Bold"
+                  },
+                  {
+                    "option": "Storytelling"
+                  },
+                  {
+                    "option": "Motivational"
+                  }
+                ]
+              }
+            },
+            {
+              "fieldLabel": "Post Length",
+              "placeholder": "Medium (LinkedIn style)",
+              "defaultValue": "Medium (LinkedIn style)",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Emoji Usage",
+              "fieldType": "radio",
+              "defaultValue": "Yes",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Yes"
+                  },
+                  {
+                    "option": "No"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Hashtag Preference",
+              "fieldType": "dropdown",
+              "defaultValue": "Trending / High reach",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Trending / High reach"
+                  },
+                  {
+                    "option": "Medium (5–8)"
+                  },
+                  {
+                    "option": "Minimal (3–5)"
+                  }
+                ]
+              }
+            },
+            {
+              "fieldLabel": "Personal Context",
+              "fieldType": "textarea",
+              "placeholder": "e.g. As a student learning n8n, I faced failures…"
+            },
+            {
+              "fieldLabel": "Formatting Preference",
+              "fieldType": "dropdown",
+              "defaultValue": "Hook → Story → Lesson",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Plain text"
+                  },
+                  {
+                    "option": "Bullet points"
+                  },
+                  {
+                    "option": "Bold highlights"
+                  },
+                  {
+                    "option": "Hook → Story → Lesson"
+                  }
+                ]
+              },
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.3,
+      "position": [
+        -2288,
+        688
+      ],
+      "id": "94ed906c-312f-482f-9543-c89c3ed3447c",
+      "name": "form for post",
+      "webhookId": "9d41258e-2357-463a-8fd4-f0c5ceee2411"
+    },
+    {
+      "parameters": {
+        "content": "## image prompt generation -> prompt formatting ->final image generation with error control",
+        "height": 720,
+        "width": 624,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1344,
+        416
+      ],
+      "typeVersion": 1,
+      "id": "e4e63d92-01af-4bb3-81c8-b6ee55d64d2a",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## get generated image url -> convert to base64 -> covert to png",
+        "height": 720,
+        "width": 480,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -720,
+        416
+      ],
+      "typeVersion": 1,
+      "id": "22436d78-dae8-4ab2-a99f-af6c9b538f16",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## finally full post with attachment send to gmail",
+        "height": 720,
+        "width": 416,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -240,
+        416
+      ],
+      "typeVersion": 1,
+      "id": "2ea42f92-5fa3-4364-a813-933c3b1dd685",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "# Multi-Agent AI for LinkedIn Content Creation",
+        "height": 816,
+        "width": 2496,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2320,
+        320
+      ],
+      "typeVersion": 1,
+      "id": "b4047390-abcf-4d0e-adda-bc2173210a78",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "url": "https://api.crawleo.dev/api/v1/search",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "query",
+              "value": "={{ $json['Topic / Idea'] }}"
+            },
+            {
+              "name": "max_pages",
+              "value": "3"
+            },
+            {
+              "name": "setLang",
+              "value": "en"
+            },
+            {
+              "name": "cc",
+              "value": "US"
+            },
+            {
+              "name": "geolocation",
+              "value": "random"
+            },
+            {
+              "name": "device",
+              "value": "desktop"
+            },
+            {
+              "name": "enhanced_html",
+              "value": "true"
+            },
+            {
+              "name": "markdown",
+              "value": "true"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-api-key",
+              "value": "=sk_af8dcee0"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -2080,
+        688
+      ],
+      "id": "bb5b8a54-cf3c-4c15-864f-2a25d074cff0",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -880,
+        896
+      ],
+      "id": "b3ef7607-ca5a-413f-bd12-9935b0ddf9b4",
+      "name": "5 sec wait",
+      "webhookId": "e398788a-3fe5-43a1-8312-32332afc2f59"
+    },
+    {
+      "parameters": {
+        "content": "## crawleo.dev live search api",
+        "height": 80,
+        "width": 192,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2128,
+        592
+      ],
+      "typeVersion": 1,
+      "id": "47a09b0a-9bc0-447d-8ddb-b541f67a3363",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c9b9b962-f23b-4d4a-9b7d-427870be51d3",
+              "name": "clean_text",
+              "value": "={{  ($json.output || '')   .replace(/:/g, '')   .replace(/\\n+/g, ' ')   .replace(/\\*/g, '')   .replace(/\\+/g, '')   .replace(/\\s+/g, ' ')   .trim() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1088,
+        688
+      ],
+      "id": "824a2ff1-ef99-4ca5-bcc1-4f846d3fcf98",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "LinkedIn Post Generator Engine": {
+      "main": [
+        [
+          {
+            "node": "Markdown",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Markdown": {
+      "main": [
+        [
+          {
+            "node": "Image prompt generator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "email labeling",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "llama3.2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Image prompt generator",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "LinkedIn Post Generator Engine",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Image prompt generator": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "5 sec wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "get an generated image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get an generated image": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "email labeling": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "form for post": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "LinkedIn Post Generator Engine",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "5 sec wait": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "f03e560c-37ab-47ff-adef-02e9e58b82e2",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "558d88703fb65b2d0e44613bc35916258b0f0bf983c5d4730c00c424b77ca36a"
+  },
+  "id": "zrfx0iMEx7XNEBSC",
+  "tags": []
+}
