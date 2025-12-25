@@ -103,7 +103,7 @@ multi-agent-content-workflow/
 
 ```bash
 # Clone repository
-git clone https://github.com/OMI-KALIX/multi-agent-content-workflow.git
+git clone https://github.com/OMI-KALIX/Multi-Agent-AI-Workflow-for-Content-Creation.git
 
 # Copy environment variables
 cp .env.example .env
